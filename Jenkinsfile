@@ -1,28 +1,22 @@
-pipeline
-{
-
-agent any
-stages{
-	
-	stage('build')
-	{
-		steps{
-			echo "This is build stage"
-			}
-	}
-	
-	stage('test')
-	{
-		steps{
-			echo "This is test stage"
-			}
-	}
-
-	stage('deploy')
-	{
-		steps{
-			echo "THis is deploy stage"
-			}
+agent {
+  label 'DevServer'
 }
+stages{
+
+        stage('build')
+        {
+                steps{
+                        sh 'mvn clean package'
+
+                }
+  post {
+    success {
+                archiveArtifacts artifacts: '**/target/*.war'
+    }
+  }
+        }
+
+
+
 }
 }
